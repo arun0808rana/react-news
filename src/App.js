@@ -2,6 +2,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import { useEffect, useState } from "react";
 import Gears from "./assets/gears.svg";
+import dummy from "./dummy";
 
 function App() {
   const [state, setState] = useState({ isLoaded: false, items: [] });
@@ -32,7 +33,9 @@ function App() {
   };
 
   const handleCategorySelection = (params) => {
-    setCategory(params.target.innerText);
+    if (allCategories.includes(params.target.innerText)) {
+      setCategory(params.target.innerText);
+    }
   };
 
   const handleBoxClick = (e) => {
@@ -53,10 +56,10 @@ function App() {
             });
           },
           (error) => {
-            // setState({
-            //   isLoaded: true,
-            //   error,
-            // });
+            setState({
+              isLoaded: true,
+              items: dummy.data,
+            });
           }
         );
     }
@@ -65,10 +68,14 @@ function App() {
   if (state.isLoaded)
     return (
       <>
+        <h1>One News</h1>
         <div className="categories-strip" onClick={handleCategorySelection}>
           {allCategories.map((_category, index) => {
             return (
-              <div key={`categories-${index}`} className="category">
+              <div
+                key={`categories-${index}`}
+                className={`category ${_category === category ? "active" : ""}`}
+              >
                 {_category}
               </div>
             );
